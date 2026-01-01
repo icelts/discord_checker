@@ -112,6 +112,33 @@
             background: #eef0ff;
         }
 
+        .format-info {
+            margin-top: 12px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .format-info code {
+            display: block;
+            padding: 4px 8px;
+            background: #e8ecff;
+            border-radius: 4px;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            margin-top: 8px;
+            font-size: 0.85em;
+            word-break: break-all;
+        }
+
+        .format-info strong {
+            color: #667eea;
+        }
+
         .submit-btn {
             width: 100%;
             padding: 18px;
@@ -357,10 +384,25 @@
                     <div class="form-group">
                         <label for="tokenFile">Token File (.txt)</label>
                         <input type="file" id="tokenFile" name="token_file" class="file-input" accept=".txt" required>
+                        <div class="format-info">
+                            <strong>Format:</strong> One token per line
+                            <br>
+                            <code>token1</code><br>
+                            <code>token2</code><br>
+                            <code>token3</code>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="proxyFile">Proxy File (.txt) - Optional</label>
                         <input type="file" id="proxyFile" name="proxy_file" class="file-input" accept=".txt">
+                        <div class="format-info">
+                            <strong>Format:</strong> One proxy per line
+                            <br>
+                            <code>ip:port</code> or <code>ip:port:username:password</code>
+                            <br>
+                            <code>192.168.1.1:8080</code><br>
+                            <code>192.168.1.1:8080:user:pass</code>
+                        </div>
                     </div>
                     <button type="submit" class="submit-btn">Start Checking</button>
                 </form>
