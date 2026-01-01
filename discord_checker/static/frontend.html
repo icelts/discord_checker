@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discord Token 检查器</title>
+</head>
+<body>
+    <h1>上传 Token 和 代理文件</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        Token 文件: <input type="file" name="token_file"><br>
+        Proxy 文件: <input type="file" name="proxy_file"><br>
+        <button type="submit">开始检测</button>
+    </form>
+    <div id="progressBox" style="display:none;">
+        <h2>进度：</h2>
+        <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+        <p id="progressText">检测中...</p>
+    </div>
+    <div id="result">
+        <h2>结果下载</h2>
+        <a href="/download/verified_and_phone">邮箱+手机号</a><br>
+        <a href="/download/verified_no_phone">已验证邮箱</a><br>
+        <a href="/download/unverified_email">未验证邮箱</a><br>
+        <a href="/download/banned">封禁</a><br>
+        <a href="/result/stats.json" target="_blank">查看统计</a>
+    </div>
+    <script>
+    async function checkProgress() {
+        const res = await fetch("/progress");
+        const data = await res.json();
+        const done = data.done;
+        const total = data.total;
+        const stats = data.stats || {};
+        const percent = total ? Math.round((done / total) * 100) : 0;
+        document.getElementById("progressBar").value = percent;
+        document.getElementById("progressText").innerText =
+            `已完成：${done}/${total} (${percent}%) | 成功：${stats.valid || 0} 封禁：${stats.banned || 0}`;
+        if (done < total) setTimeout(checkProgress, 2000);
+        else alert("✅ 检测完成！");
+    }
+    document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        document.getElementById("progressBox").style.display = "block";
+        const form = new FormData(this);
+        const res = await fetch("/upload/", { method: "POST", body: form });
+        const data = await res.json();
+        alert(data.status);
+        checkProgress();
+    });
+    </script>
+</body>
+</html>
